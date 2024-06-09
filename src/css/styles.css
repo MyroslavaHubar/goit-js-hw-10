@@ -2,6 +2,10 @@
 @import url(./timer.css);
 @import url(./snackbar.css);
 
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+
 .nav-link {
   display: block;
   margin: 15px;
