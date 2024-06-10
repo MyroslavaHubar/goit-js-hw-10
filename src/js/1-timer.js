@@ -61,9 +61,10 @@ refs.startBtnElem.addEventListener('click', () => {
   const intervalId = setInterval(() => {
     const diff = userSelectedDate - Date.now();
     const time = convertMs(diff);
+
     refs.daysElem.textContent = getTimeValue(time.days);
     refs.hoursElem.textContent = getTimeValue(time.hours);
-    refs.minuteElem.textContent = getTimeValue(time.hours);
+    refs.minuteElem.textContent = getTimeValue(time.minutes);
     refs.secondElem.textContent = getTimeValue(time.seconds);
   }, 1000);
 
