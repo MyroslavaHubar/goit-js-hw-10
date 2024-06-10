@@ -2,12 +2,17 @@ import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
+import imgUrl from '../img/error-timer.svg';
 
 const timeInputElem = document.querySelector('#datetime-picker');
-const startBtn = document.querySelector('[data-start]');
-const timerElem = document.querySelector('.timer');
+const startBtnElem = document.querySelector('[data-start]');
+const dataElem = document.querySelector('[data-days]');
+const hoursElem = document.querySelector('[data-hours]');
+const minuteElem = document.querySelector('[data-minutes]');
+const secondElem = document.querySelector('[data-seconds]');
 
 let userSelectedDate;
+startBtnElem.setAttribute('disabled', '');
 
 const options = {
   enableTime: true,
@@ -15,31 +20,28 @@ const options = {
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
-    const selectedTime = selectedDates[0];
-    const currentTime = Date.now();
+    userSelectedDate = selectedDates[0];
 
-    if (selectedTime < currentTime) {
-      startBtn.disabled = true;
-
+    if (userSelectedDate < new Date()) {
+      startBtnElem.setAttribute('disabled', '');
       iziToast.error({
-        title: 'Error',
-        titleColor: '#fff',
-        titleSize: '16px',
-        titleLineHeight: '1.5',
         message: 'Please choose a date in the future',
         messageColor: '#fff',
-        messageSize: '16px',
+        messageSize: '16',
         messageLineHeight: '1.5',
         backgroundColor: '#ef4040',
         position: 'topRight',
-        iconUrl: '../img/error.svg',
+        iconUrl: imgUrl,
         theme: 'dark',
+        close: true,
+        closeOnEscape: true,
+        closeOnClick: true,
+        iconColor: '#fafafb',
       });
     } else {
-      userSelectedDate = selectedTime;
-      startBtn.classList.add('active-btn');
-      startBtn.disabled = false;
+      startBtnElem.removeAttribute('disable');
     }
+    console.log(userSelectedDate);
   },
 };
 
