@@ -4,15 +4,17 @@ import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 import imgUrl from '../img/error-timer.svg';
 
-const timeInputElem = document.querySelector('#datetime-picker');
-const startBtnElem = document.querySelector('[data-start]');
-const dataElem = document.querySelector('[data-days]');
-const hoursElem = document.querySelector('[data-hours]');
-const minuteElem = document.querySelector('[data-minutes]');
-const secondElem = document.querySelector('[data-seconds]');
+const refs = {
+  timeInputElem: document.querySelector('#datetime-picker'),
+  startBtnElem: document.querySelector('[data-start]'),
+  daysElem: document.querySelector('[data-days]'),
+  hoursElem: document.querySelector('[data-hours]'),
+  minuteElem: document.querySelector('[data-minutes]'),
+  secondElem: document.querySelector('[data-seconds]'),
+};
 
-let userSelectedDate;
-startBtnElem.setAttribute('disabled', '');
+refs.startBtnElem.disable = true;
+let userSelectedDate = '';
 
 const options = {
   enableTime: true,
@@ -20,10 +22,12 @@ const options = {
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
-    userSelectedDate = selectedDates[0];
+    const selectedDate = selectedDates[0];
+    const currentTime = Date.now();
 
-    if (userSelectedDate < new Date()) {
-      startBtnElem.setAttribute('disabled', '');
+    if (selectedDate < currentTime) {
+      refs.startBtnElem.disable = true;
+      refs.startBtnElem.classList.remove('active-btn');
       iziToast.error({
         message: 'Please choose a date in the future',
         messageColor: '#fff',
@@ -37,15 +41,41 @@ const options = {
         closeOnEscape: true,
         closeOnClick: true,
         iconColor: '#fafafb',
+        imageWidth: 302,
       });
     } else {
-      startBtnElem.removeAttribute('disable');
+      refs.startBtnElem.disable = false;
+      refs.startBtnElem.classList.add('active-btn');
+      userSelectedDate = selectedDate;
     }
-    console.log(userSelectedDate);
   },
 };
 
-flatpickr(timeInputElem, options);
+flatpickr(refs.timeInputElem, options);
+
+refs.startBtnElem.addEventListener('click', () => {
+  refs.startBtnElem.classList.remove('active-btn');
+  refs.startBtnElem.disable = true;
+  refs.timeInputElem.disable = true;
+
+  const intervalId = setInterval(() => {
+    const diff = userSelectedDate - Date.now();
+    const time = convertMs(diff);
+    refs.daysElem.textContent = getTimeValue(time.days);
+    refs.hoursElem.textContent = getTimeValue(time.hours);
+    refs.minuteElem.textContent = getTimeValue(time.hours);
+    refs.secondElem.textContent = getTimeValue(time.seconds);
+  }, 1000);
+
+  setTimeout(() => {
+    clearInterval(intervalId);
+    refs.timeInputElem.disable = false;
+  }, userSelectedDate - Date.now());
+});
+
+function getTimeValue(value) {
+  return value.toString().padStart(2, '0');
+}
 
 function convertMs(ms) {
   const second = 1000;
