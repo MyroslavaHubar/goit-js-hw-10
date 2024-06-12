@@ -35,12 +35,12 @@ const options = {
         messageLineHeight: '1.5',
         backgroundColor: '#ef4040',
         position: 'topRight',
-        iconUrl: imgUrl,
+        imgUrl: imgUrl,
         theme: 'dark',
         close: true,
         closeOnEscape: true,
         closeOnClick: true,
-        iconColor: '#fafafb',
+        imgColor: '#fafafb',
         imageWidth: 302,
       });
     } else {
