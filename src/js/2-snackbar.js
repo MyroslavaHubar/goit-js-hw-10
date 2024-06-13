@@ -37,10 +37,11 @@ function promiseGenerator(e) {
         messageColor: '#fff',
         position: 'topRight',
         backgroundColor: '#59a10d',
+        icon: false,
       });
     })
     .catch(delay => {
-      iziToast.success({
+      iziToast.error({
         title: '',
         message: `❌ Rejected promise in ${delay}ms`,
         messageLineHeight: '1.5',
@@ -48,6 +49,7 @@ function promiseGenerator(e) {
         messageColor: '#fff',
         position: 'topRight',
         backgroundColor: '#ef4040',
+        icon: false,
       });
     });
   console.log(promise);
