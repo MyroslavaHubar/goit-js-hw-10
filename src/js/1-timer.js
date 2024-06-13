@@ -13,7 +13,7 @@ const refs = {
   secondElem: document.querySelector('[data-seconds]'),
 };
 
-refs.startBtnElem.disable = true;
+refs.startBtnElem.disabled = true;
 let userSelectedDate = '';
 
 const options = {
@@ -26,7 +26,7 @@ const options = {
     const currentTime = Date.now();
 
     if (selectedDate < currentTime) {
-      refs.startBtnElem.disable = true;
+      refs.startBtnElem.disabled = true;
       refs.startBtnElem.classList.remove('active-btn');
       iziToast.error({
         message: 'Please choose a date in the future',
@@ -44,7 +44,7 @@ const options = {
         imageWidth: 302,
       });
     } else {
-      refs.startBtnElem.disable = false;
+      refs.startBtnElem.disabled = false;
       refs.startBtnElem.classList.add('active-btn');
       userSelectedDate = selectedDate;
     }
@@ -55,11 +55,22 @@ flatpickr(refs.timeInputElem, options);
 
 refs.startBtnElem.addEventListener('click', () => {
   refs.startBtnElem.classList.remove('active-btn');
-  refs.startBtnElem.disable = true;
-  refs.timeInputElem.disable = true;
+  refs.startBtnElem.disabled = true;
+  refs.timeInputElem.disabled = true;
 
   const intervalId = setInterval(() => {
     const diff = userSelectedDate - Date.now();
+
+    if (diff <= 0) {
+      clearInterval(intervalId);
+      refs.daysElem.textContent = '00';
+      refs.hoursElem.textContent = '00';
+      refs.minuteElem.textContent = '00';
+      refs.secondElem.textContent = '00';
+      refs.timeInputElem.disabled = false;
+      return;
+    }
+
     const time = convertMs(diff);
 
     refs.daysElem.textContent = getTimeValue(time.days);
@@ -68,10 +79,10 @@ refs.startBtnElem.addEventListener('click', () => {
     refs.secondElem.textContent = getTimeValue(time.seconds);
   }, 1000);
 
-  setTimeout(() => {
-    clearInterval(intervalId);
-    refs.timeInputElem.disable = false;
-  }, userSelectedDate - Date.now());
+  // setTimeout(() => {
+  //   clearInterval(intervalId);
+  //   refs.timeInputElem.disabled = false;
+  // }, userSelectedDate - Date.now());
 });
 
 function getTimeValue(value) {
