@@ -63,10 +63,10 @@ refs.startBtnElem.addEventListener('click', () => {
 
     if (diff <= 0) {
       clearInterval(intervalId);
-      refs.daysElem.textContent = '00';
-      refs.hoursElem.textContent = '00';
-      refs.minuteElem.textContent = '00';
-      refs.secondElem.textContent = '00';
+      // refs.daysElem.textContent = '00';
+      // refs.hoursElem.textContent = '00';
+      // refs.minuteElem.textContent = '00';
+      // refs.secondElem.textContent = '00';
       refs.timeInputElem.disabled = false;
       return;
     }
