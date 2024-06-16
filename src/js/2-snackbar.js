@@ -29,28 +29,36 @@ function promiseGenerator(e) {
 
   promise
     .then(delay => {
-      iziToast.success({
-        title: '',
-        message: `✅ Fulfilled promise in ${delay}ms`,
-        messageLineHeight: '1.5',
-        messageSize: '16',
-        messageColor: '#fff',
-        position: 'topRight',
-        backgroundColor: '#59a10d',
-        icon: false,
-      });
+      showOk(delay);
     })
     .catch(delay => {
-      iziToast.error({
-        title: '',
-        message: `❌ Rejected promise in ${delay}ms`,
-        messageLineHeight: '1.5',
-        messageSize: '16',
-        messageColor: '#fff',
-        position: 'topRight',
-        backgroundColor: '#ef4040',
-        icon: false,
-      });
+      showError(delay);
     });
   console.log(promise);
+}
+
+function showError(delay) {
+  iziToast.error({
+    title: '',
+    message: `❌ Rejected promise in ${delay}ms`,
+    messageLineHeight: '1.5',
+    messageSize: '16',
+    messageColor: '#fff',
+    position: 'topRight',
+    backgroundColor: '#ef4040',
+    icon: false,
+  });
+}
+
+function showOk(delay) {
+  iziToast.success({
+    title: '',
+    message: `✅ Fulfilled promise in ${delay}ms`,
+    messageLineHeight: '1.5',
+    messageSize: '16',
+    messageColor: '#fff',
+    position: 'topRight',
+    backgroundColor: '#59a10d',
+    icon: false,
+  });
 }
